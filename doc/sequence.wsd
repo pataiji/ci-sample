@@ -1,0 +1,19 @@
+title ci-sample
+
+participant Developer as d
+participant GitLab as g
+participant Jenkins as j
+participant App Server as a
+
+d->g: git push
+g->+j: build TEST_sample-app
+j->j: yarn test
+
+alt success & master branch
+    j->+j: build RELEASE_sample-app
+    j->j: yarn build
+    j->a: scp resources
+    deactivate j
+end
+
+j-->-g: build result
