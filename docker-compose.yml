@@ -6,7 +6,7 @@ services:
       - "8080:8080"
       - "50000:50000"
   gitlab:
-    image: gitlab/gitlab-ce:latest
+    image: gitlab/gitlab-ce:12.9.1-ce.0
     ports:
       - "8081:8081"
       - "8443:443"
