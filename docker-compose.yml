@@ -1,0 +1,37 @@
+version: "3.7"
+services:
+  jenkins:
+    build: ./jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    ports:
+      - "8081:8081"
+      - "8443:443"
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://localhost:8081'
+    volumes:
+      - gitlab_config:/etc/gitlab:Z
+      - gitlab_data:/var/opt/gitlab:Z
+    depends_on:
+      - gitlab_config
+      - gitlab_data
+  gitlab_config:
+    build: ./gitlab_config
+    volumes:
+      - gitlab_config:/etc/gitlab
+  gitlab_data:
+    build: ./gitlab_data
+    volumes:
+      - gitlab_data:/var/opt/gitlab
+  app:
+    build: ./server
+    ports:
+      - "8082:80"
+
+volumes:
+  gitlab_config:
+  gitlab_data:
